@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const Workout = require("./models");
 
 const PORT = process.env.PORT || 3000;
 
@@ -42,14 +43,16 @@ app.get("/stats", (req,res) => {
 
 
 // API ROUTES
+
+// https://mongoosejs.com/docs/models.html
 app.post("/api/workouts", (req, res) => {
-  let data = req.body;
-  db.Workout.create({
-    day: new Date().setDate(new Date().getDate)
+  var data = req.body;
+  var date = new Date();
+  const workout = new Workout({day: date }, {exercises: data })
+  workout.save(function (err){
+    if(err) res.json(err)
   }).then(update => {
     res.json(update);
-  }).catch(err => {
-    res.json(err);
   })
 });
 
@@ -89,7 +92,7 @@ app.get("/api/workouts/range", (req, res) => {
 
 // https://stackoverflow.com/questions/10920651/get-the-latest-record-from-mongodb-collection/53474483
 app.get("/api/workouts", (req,res) => {
-  db.Workout.find().sort({$natural:-1}).limit(1).then(workoutRes => {
+  db.Workout.find().limit(1).then(workoutRes => {
     res.json(workoutRes);
     }).catch(err => {
     res.json(err);
