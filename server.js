@@ -1,11 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const Workout = require("./models");
+const bodyParser = require("body-parser");
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+const db = reqiure("./models")
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -26,59 +27,54 @@ app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);
 });
 
-const db = require("./models")
 
-// HTML ROUTES
+// HTML Routes
+
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "./public/index.html"))
+})
+
 app.get("/", (req,res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/exercise", (req,res) => {
-  res.sendFile(path.join(__dirname, "public", "exercise.html"));
+  res.sendFile(path.join(__dirname, "./public/exercise.html"));
 });
 
 app.get("/stats", (req,res) => {
-  res.sendFile(path.join(__dirname, "public", "stats.html"))
+  res.sendFile(path.join(__dirname, "./public/stats.html"))
 })
+
 
 
 // API ROUTES
 
 // https://mongoosejs.com/docs/models.html
 app.post("/api/workouts", (req, res) => {
-  var data = req.body;
-  var date = new Date();
-  const workout = new Workout({day: date }, {exercises: data })
-  workout.save(function (err){
-    if(err) res.json(err)
-  }).then(update => {
-    res.json(update);
+  let data = req.body;
+  db.Workout.create(data).then(update => {
+      res.json(update);
+  }).catch(err => {
+      res.json(err);
   })
 });
 
 // https://docs.mongodb.com/manual/reference/operator/update/push/
 app.put("/api/workouts/:id", (req,res) => {
-  let url = req.params;
+  let dataId= req.params.id;
   let data = req.body;
-
-  db.Workout.update(
-    {_id: url.id}, 
-    {$push: { exercises: [
-      {
-        type: data.type,
-        name: data.name,
-        duration: data.duration,
-        weight: data.weight,
-        sets: data.sets,
-        reps: data.reps,
-        distance: data.distance
-      }
-    ]}}
-    ).then(update => {
-    res.json(update);
-  }).catch(err => {
-    res.json(err);
-  })
+  
+  db.Exercise.create(data).then(() =>
+      db.Workout.findOneAndUpdate(
+          {_id: dataId},
+          {$push: {exercises: _id}},
+          {new: true}
+      )).then( update => {
+          res.json(update);
+      }).catch(err => {
+          res.json(err)
+      })
 });
 
 
@@ -98,3 +94,4 @@ app.get("/api/workouts", (req,res) => {
     res.json(err);
   })
 });
+
