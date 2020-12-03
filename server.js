@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 3000;
 
 const app = express();
-const db = reqiure("./models")
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -49,6 +49,8 @@ app.get("/stats", (req,res) => {
 
 
 // API ROUTES
+
+const db = require("./models")
 
 // https://mongoosejs.com/docs/models.html
 app.post("/api/workouts", (req, res) => {
