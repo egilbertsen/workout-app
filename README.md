@@ -27,4 +27,4 @@ The user is then allowed to fill in a form, populated by excercise type, to coll
 
 Please see the following example of the launched application: 
 
-![Demo Deployed App] (https://mighty-lowlands-89111.herokuapp.com)
+[Demo Deployed App] (https://mighty-lowlands-89111.herokuapp.com)
