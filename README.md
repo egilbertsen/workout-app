@@ -16,7 +16,7 @@ Please be sure to install all npm dependencies by running an "npm install" comma
 
 Upon launching the app, the user will be presented with the following interface:
 
-![homepage] (./images/homepage.png)
+![homepage](./images/homepage.png)
 
 The user is then allowed to fill in a form, populated by excercise type, to collect all relevant information regarding the exercise. The user can add as many exercises as desired to build out their workout. 
 
@@ -27,4 +27,4 @@ The user is then allowed to fill in a form, populated by excercise type, to coll
 
 Please see the following example of the launched application: 
 
-[Demo Deployed App] (https://mighty-lowlands-89111.herokuapp.com)
+![Demo Deployed App] (https://mighty-lowlands-89111.herokuapp.com)
